@@ -87,6 +87,7 @@ class luxrender_accelerator(declarative_property_group):
                         ('tabreckdtree', 'KD Tree', 'A traditional KD Tree'),
                         ('qbvh', 'QBVH', 'Quad bounding volume hierarchy'),
                         ('mbvh', 'MBVH', 'Experimental Multi-BVH accelerator with node collapsing'),
+                        ('embree', 'Embree', 'Use external Intel Embree libraries'),
                         ('none', 'None', 'Simply brute-force the scene. This is not recommended'),
             ],
             'save_in_preset': True
