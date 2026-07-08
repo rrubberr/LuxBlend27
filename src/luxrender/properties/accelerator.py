@@ -53,6 +53,8 @@ class luxrender_accelerator(declarative_property_group):
         'maxleafprims',
         'fullsweepthreshold',
         'skipfactor',
+        'highquality',
+        'robust',
         'spacer',  # add an extra one for halt settings, which does not have its own advanced option
     ]
 
@@ -69,6 +71,8 @@ class luxrender_accelerator(declarative_property_group):
         'maxleafprims' : {'advanced': True, 'accelerator': 'mbvh'},
         'fullsweepthreshold': {'advanced': True, 'accelerator': 'qbvh'},
         'skipfactor': {'advanced': True, 'accelerator': 'qbvh'},
+        'highquality': {'advanced': True, 'accelerator': 'embree'},
+        'robust': {'advanced': True, 'accelerator': 'embree'},
     }
 
     properties = [
@@ -175,6 +179,22 @@ class luxrender_accelerator(declarative_property_group):
             'default': 1,
             'save_in_preset': True
         },
+        {
+            'attr': 'highquality',
+            'type': 'bool',
+            'name': 'High quality',
+            'description': 'Use the highest quality Embree scene build mode',
+            'default': True,
+            'save_in_preset': True
+        },
+                {
+            'attr': 'robust',
+            'type': 'bool',
+            'name': 'Robust',
+            'description': 'Use the robust Embree scene build mode to prevent artifacts',
+            'default': False,
+            'save_in_preset': True
+        },
     ]
 
     def api_output(self):
@@ -206,5 +226,9 @@ class luxrender_accelerator(declarative_property_group):
                 params.add_float('emptybonus', self.emptybonus)
                 params.add_integer('costsamples', self.costsamples)
                 params.add_integer('maxleafprims', self.maxleafprims)
+            
+            if self.accelerator == 'embree':
+                params.add_bool('highquality', self.highquality)
+                params.add_bool('robust', self.robust)                
 
         return self.accelerator, params
