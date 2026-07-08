@@ -706,6 +706,7 @@ class luxrender_lamp_hemi(declarative_property_group):
         'infinite_map',
         'mapping_type',
         'nsamples',
+        'imapmaxresolution',
         'gamma',
         [0.323, 'L_colorlabel', 'L_color'],
         'hdri_multiply',
@@ -718,6 +719,7 @@ class luxrender_lamp_hemi(declarative_property_group):
         'hdri_multiply': {'infinite_map': LO({'!=': ''})},
         'gamma': {'infinite_map': LO({'!=': ''})},
         'nsamples': A([{'infinite_map': LO({'!=': ''})}, lambda: not UseLuxCore()]),
+        'imapmaxresolution': A([{'infinite_map': LO({'!=': ''})}, lambda: not UseLuxCore()]),
         'hdri_infinitesample': A([{'infinite_map': LO({'!=': ''})}, lambda: not UseLuxCore()]),
         'sampleupperhemisphereonly': A([{'infinite_map': LO({'!=': ''})}, lambda: UseLuxCore()]),
     }
@@ -780,6 +782,17 @@ images. Will disable use of portals for this light!',
             'soft_max': 100,
         },
         {
+            'type': 'int',
+            'attr': 'imapmaxresolution',
+            'name': 'Image map resolution',
+            'description': 'The X resolution (width, in pixels) evaluated for the HDRI map',
+            'default': 512,
+            'min': 8,
+            'soft_min': 64,
+            'max': 8192,
+            'soft_max': 2048,
+        },
+        {
             'type': 'bool',
             'attr': 'sampleupperhemisphereonly',
             'name': 'Only sample upper hemisphere',
@@ -795,6 +808,7 @@ images. Will disable use of portals for this light!',
         if self.infinite_map:
             if lamp_object.library is not None:
                 hdri_path = bpy.path.abspath(self.infinite_map, lamp_object.library.filepath)
+                params.add_integer('imapmaxresolution', self.imapmaxresolution)
             else:
                 hdri_path = self.infinite_map
             
