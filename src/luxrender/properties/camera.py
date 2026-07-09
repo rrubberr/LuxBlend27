@@ -521,6 +521,7 @@ class luxrender_film(declarative_property_group):
 
         'ldr_clamp_method',
         'outlierrejection_k',
+        'variancerejection_k',
         'tilecount'
     ]
 
@@ -707,11 +708,18 @@ class luxrender_film(declarative_property_group):
         {
             'type': 'int',
             'attr': 'outlierrejection_k',
-            'name': 'Firefly rejection',
-            'description': 'Firefly (outlier) rejection k parameter. 0=disabled',
+            'name': 'Firefly rejection radius',
+            'description': 'The radius around a contribution to consider for firefly rejection',
             'default': 2,
             'min': 0,
             'soft_min': 0,
+        },
+        {
+            'type': 'int',
+            'attr': 'variancerejection_k',
+            'name': 'Variance rejection threshold',
+            'description': 'The variance threshold above which a contribution is clamped',
+            'default': 10,
         },
         {
             'type': 'int',
@@ -733,7 +741,7 @@ class luxrender_film(declarative_property_group):
                 ('cut', 'Cut', 'Clip channels individually'),
                 ('darken', 'Darken', 'Darken highlights')
             ],
-            'default': 'cut'
+            'default': 'hue'
         },
     ]
 
@@ -931,6 +939,9 @@ class luxrender_film(declarative_property_group):
 
         if self.outlierrejection_k > 0 and scene.luxrender_rendermode.renderer != 'sppm':
             params.add_integer('outlierrejection_k', self.outlierrejection_k)
+        
+        if self.variancerejection_k > 0:
+            params.add_integer('variancerejection_k', self.variancerejection_k)
 
         params.add_integer('tilecount', self.tilecount)
 
