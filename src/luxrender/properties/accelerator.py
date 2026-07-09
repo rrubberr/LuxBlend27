@@ -42,15 +42,12 @@ class luxrender_accelerator(declarative_property_group):
     controls = [
         'spacer',
         'accelerator',
-
-        'costsamples',
         'intersectcost',
         'traversalcost',
         'emptybonus',
         'maxprims',
         'maxdepth',
         'maxprimsperleaf',
-        'maxleafprims',
         'fullsweepthreshold',
         'skipfactor',
         'highquality',
@@ -61,14 +58,12 @@ class luxrender_accelerator(declarative_property_group):
     visibility = {
         'spacer': {'advanced': True},
         'accelerator': {'advanced': True},
-        'costsamples': {'advanced': True, 'accelerator': 'mbvh'},
-        'intersectcost': {'advanced': True, 'accelerator': O(['tabreckdtree', 'mbvh'])},
-        'traversalcost': {'advanced': True, 'accelerator': O(['tabreckdtree', 'mbvh'])},
-        'emptybonus': {'advanced': True, 'accelerator': O(['tabreckdtree', 'mbvh'])},
+        'intersectcost': {'advanced': True, 'accelerator': 'tabreckdtree'},
+        'traversalcost': {'advanced': True, 'accelerator': 'tabreckdtree'},
+        'emptybonus': {'advanced': True, 'accelerator': 'tabreckdtree'},
         'maxprims': {'advanced': True, 'accelerator': 'tabreckdtree'},
         'maxdepth': {'advanced': True, 'accelerator': 'tabreckdtree'},
         'maxprimsperleaf': {'advanced': True, 'accelerator': 'qbvh'},
-        'maxleafprims' : {'advanced': True, 'accelerator': 'mbvh'},
         'fullsweepthreshold': {'advanced': True, 'accelerator': 'qbvh'},
         'skipfactor': {'advanced': True, 'accelerator': 'qbvh'},
         'highquality': {'advanced': True, 'accelerator': 'embree'},
@@ -86,13 +81,12 @@ class luxrender_accelerator(declarative_property_group):
             'attr': 'accelerator',
             'name': 'Accelerator',
             'description': 'Scene accelerator type',
-            'default': 'qbvh',
+            'default': 'embree',
             'items': [  # As of 1.9, other accelerator types have been removed from the core entirely
+                        ('none', 'None', 'Simply brute-force the scene. This is not recommended'),
                         ('tabreckdtree', 'KD Tree', 'A traditional KD Tree'),
                         ('qbvh', 'QBVH', 'Quad bounding volume hierarchy'),
-                        ('mbvh', 'MBVH', 'Experimental Multi-BVH accelerator with node collapsing'),
                         ('embree', 'Embree', 'Use external Intel Embree libraries'),
-                        ('none', 'None', 'Simply brute-force the scene. This is not recommended'),
             ],
             'save_in_preset': True
         },
@@ -102,14 +96,6 @@ class luxrender_accelerator(declarative_property_group):
             'name': 'Advanced',
             'description': 'Configure advanced accelerator options',
             'default': False,
-            'save_in_preset': True
-        },
-        {
-            'attr': 'costsamples',
-            'type': 'int',
-            'name': 'Cost Samples',
-            'description': 'Number of split options evaluated',
-            'default': 8,
             'save_in_preset': True
         },
         {
@@ -155,14 +141,6 @@ class luxrender_accelerator(declarative_property_group):
             'type': 'int',
             'name': 'Max. prims per leaf',
             'default': 8,
-            'save_in_preset': True
-        },
-        {
-            'attr': 'maxleafprims',
-            'type': 'int',
-            'name': 'Max. leaf prims',
-            'description': 'Maximum primitives per leaf; 1 produces the highest tree quality',
-            'default': 1,
             'save_in_preset': True
         },
         {
@@ -219,13 +197,6 @@ class luxrender_accelerator(declarative_property_group):
                 params.add_integer('maxprimsperleaf', self.maxprimsperleaf)
                 params.add_integer('fullsweepthreshold', self.fullsweepthreshold)
                 params.add_integer('skipfactor', self.skipfactor)
-            
-            if self.accelerator == 'mbvh':
-                params.add_integer('intersectcost', self.intersectcost)
-                params.add_integer('traversalcost', self.traversalcost)
-                params.add_float('emptybonus', self.emptybonus)
-                params.add_integer('costsamples', self.costsamples)
-                params.add_integer('maxleafprims', self.maxleafprims)
             
             if self.accelerator == 'embree':
                 params.add_bool('highquality', self.highquality)
