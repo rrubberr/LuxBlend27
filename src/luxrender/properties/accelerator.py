@@ -50,6 +50,7 @@ class luxrender_accelerator(declarative_property_group):
         'maxprimsperleaf',
         'fullsweepthreshold',
         'skipfactor',
+        'label_embree',
         'highquality',
         'robust',
         'spacer',  # add an extra one for halt settings, which does not have its own advanced option
@@ -66,6 +67,7 @@ class luxrender_accelerator(declarative_property_group):
         'maxprimsperleaf': {'advanced': True, 'accelerator': 'qbvh'},
         'fullsweepthreshold': {'advanced': True, 'accelerator': 'qbvh'},
         'skipfactor': {'advanced': True, 'accelerator': 'qbvh'},
+        'label_embree': {'advanced': True, 'accelerator': 'embree'},
         'highquality': {'advanced': True, 'accelerator': 'embree'},
         'robust': {'advanced': True, 'accelerator': 'embree'},
     }
@@ -156,6 +158,12 @@ class luxrender_accelerator(declarative_property_group):
             'name': 'Skip factor',
             'default': 1,
             'save_in_preset': True
+        },
+        {
+            'type': 'text',
+            'attr': 'label_embree',
+            'name': 'Embree support is experimental!',
+            'icon': 'ERROR'
         },
         {
             'attr': 'highquality',
