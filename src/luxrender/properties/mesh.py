@@ -63,7 +63,6 @@ class luxrender_mesh(declarative_property_group):
                    'mesh_type',
                    'instancing_mode',
                    'acceltype',
-                   'tritype',
                    'portal',
                    'generatetangents',
                    'subdiv',
@@ -81,7 +80,6 @@ class luxrender_mesh(declarative_property_group):
                                 'mesh_type': lambda: not UseLuxCore(),
                                 'instancing_mode': lambda: not UseLuxCore(),
                                 'acceltype': {'mesh_type': 'native'},
-                                'tritype': {'mesh_type': 'native'},
                                 'nsmooth': {'subdiv': 'loop'},
                                 'sharpbound': {'subdiv': 'loop'},
                                 'splitnormal': {'subdiv': 'loop'},
@@ -132,7 +130,6 @@ class luxrender_mesh(declarative_property_group):
                          'attr': 'acceltype',
                          'name': 'Accelerator Type',
                          'items': [
-                             ('auto', 'Auto', 'Automatically determine accelerator based on primitive count'),
                              ('bruteforce', 'Brute Force', 'Simply brute-force the object'),
                              ('none', 'Global', 'Use the global accelerator setting'),
                              ('qbvh', 'QBVH', 'Quad bounding volume hierarchy'),
