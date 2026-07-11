@@ -81,7 +81,7 @@ class luxrender_accelerator(declarative_property_group):
             'attr': 'accelerator',
             'name': 'Accelerator',
             'description': 'Scene accelerator type',
-            'default': 'embree',
+            'default': 'qbvh',
             'items': [  # As of 1.9, other accelerator types have been removed from the core entirely
                         ('none', 'None', 'Simply brute-force the scene. This is not recommended'),
                         ('tabreckdtree', 'KD Tree', 'A traditional KD Tree'),

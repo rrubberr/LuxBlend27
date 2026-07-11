@@ -710,7 +710,7 @@ class luxrender_film(declarative_property_group):
             'attr': 'outlierrejection_k',
             'name': 'Firefly rejection radius',
             'description': 'The radius around a contribution to consider for firefly rejection',
-            'default': 2,
+            'default': 0,
             'min': 0,
             'soft_min': 0,
         },
@@ -720,6 +720,8 @@ class luxrender_film(declarative_property_group):
             'name': 'Variance rejection threshold',
             'description': 'The variance threshold above which a contribution is clamped',
             'default': 10,
+            'min': 0,
+            'soft_min': 0,
         },
         {
             'type': 'int',

@@ -103,7 +103,7 @@ class luxrender_rendermode(declarative_property_group):
                 ('path', 'Path', 'Simple (eye-only) Path tracer'),
                 ('directlighting', 'Direct Lighting', 'Direct-light (Whitted) ray tracer'),
                 ('exphotonmap', 'Ex-Photon Map', 'Traditional photon mapping integrator'),
-                ('sppm', 'SPPM (Experimental)', 'Stochastic progressive photon mapping integrator'),
+                ('sppm', 'SPPM', 'Stochastic progressive photon mapping integrator'),
             ],
             'update': update_rendering_mode,
             'save_in_preset': True
