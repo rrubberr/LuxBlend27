@@ -65,6 +65,7 @@ class luxrender_mesh(declarative_property_group):
                    'acceltype',
                    'portal',
                    'generatetangents',
+                   'generatequadrilaterals',
                    'subdiv',
                    'sublevels',
                    'mdsublevels',
@@ -153,6 +154,13 @@ class luxrender_mesh(declarative_property_group):
                          'default': False,
                      },
                      {
+                         'type': 'bool',
+                         'attr': 'generatequadrilaterals',
+                         'name': 'Generate Quadrilaterals',
+                         'description': 'If possible, represent this mesh using quadrilaterals at render time',
+                         'default': False,
+                     },
+                     {
                          'type': 'enum',
                          'attr': 'subdiv',
                          'name': 'Subdivision Scheme',
@@ -234,6 +242,9 @@ class luxrender_mesh(declarative_property_group):
 
         # Export generatetangents
         params.add_bool('generatetangents', self.generatetangents)
+
+        # Export generatequadrilaterals
+        params.add_bool('generatequadrilaterals', self.generatequadrilaterals)
 
         # Export acceltype
         if self.mesh_type == 'native':
