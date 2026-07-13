@@ -522,6 +522,7 @@ class luxrender_film(declarative_property_group):
         'ldr_clamp_method',
         'outlierrejection_k',
         'variancerejection_k',
+        'lbl_variance',
         'tilecount'
     ]
 
@@ -713,6 +714,12 @@ class luxrender_film(declarative_property_group):
             'default': 0,
             'min': 0,
             'soft_min': 0,
+        },
+        {
+            'type': 'text',
+            'attr': 'lbl_variance',
+            'name': 'Variance rejcetion is biased!',
+            'icon': 'ERROR'
         },
         {
             'type': 'int',
