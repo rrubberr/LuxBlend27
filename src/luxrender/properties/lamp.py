@@ -785,7 +785,7 @@ images. Will disable use of portals for this light!',
             'type': 'int',
             'attr': 'imapmaxresolution',
             'name': 'Image map resolution',
-            'description': 'The X resolution (width, in pixels) evaluated for the HDRI map',
+            'description': 'The width, in pixels evaluated for the HDR map',
             'default': 512,
             'min': 8,
             'soft_min': 64,
@@ -808,7 +808,6 @@ images. Will disable use of portals for this light!',
         if self.infinite_map:
             if lamp_object.library is not None:
                 hdri_path = bpy.path.abspath(self.infinite_map, lamp_object.library.filepath)
-                params.add_integer('imapmaxresolution', self.imapmaxresolution)
             else:
                 hdri_path = self.infinite_map
             
@@ -816,6 +815,7 @@ images. Will disable use of portals for this light!',
             params.add_string('mapping', self.mapping_type)
             params.add_float('gamma', self.gamma)
             params.add_integer('nsamples', self.nsamples)
+            params.add_integer('imapmaxresolution', self.imapmaxresolution)
 
         if not self.infinite_map or self.hdri_multiply:
             params.add_color('L', self.L_color)
