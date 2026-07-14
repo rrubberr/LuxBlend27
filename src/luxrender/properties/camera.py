@@ -520,9 +520,10 @@ class luxrender_film(declarative_property_group):
         #       ['write_flm', 'restart_flm', 'write_flm_direct'],
 
         'ldr_clamp_method',
+        'lbl_rejection',
         'outlierrejection_k',
         'variancerejection_k',
-        'lbl_variance',
+        'variancerejectionwarmup',
         'tilecount'
     ]
 
@@ -707,6 +708,12 @@ class luxrender_film(declarative_property_group):
             'default': 'None'
         },
         {
+            'type': 'text',
+            'attr': 'lbl_rejection',
+            'name': 'Rejection methods are biased!',
+            'icon': 'ERROR'
+        },
+        {
             'type': 'int',
             'attr': 'outlierrejection_k',
             'name': 'Firefly rejection radius',
@@ -716,17 +723,20 @@ class luxrender_film(declarative_property_group):
             'soft_min': 0,
         },
         {
-            'type': 'text',
-            'attr': 'lbl_variance',
-            'name': 'Variance rejcetion is biased!',
-            'icon': 'ERROR'
-        },
-        {
             'type': 'int',
             'attr': 'variancerejection_k',
             'name': 'Variance rejection threshold',
             'description': 'The variance threshold above which a contribution is clamped',
             'default': 10,
+            'min': 0,
+            'soft_min': 0,
+        },
+        {
+            'type': 'int',
+            'attr': 'variancerejectionwarmup',
+            'name': 'Variance rejection warmup',
+            'description': 'The number of warmup samples before initializing the variance estimate',
+            'default': 0,
             'min': 0,
             'soft_min': 0,
         },
@@ -951,6 +961,7 @@ class luxrender_film(declarative_property_group):
         
         if self.variancerejection_k > 0:
             params.add_integer('variancerejection_k', self.variancerejection_k)
+            params.add_integer('variancerejectionwarmup', self.variancerejectionwarmup)
 
         params.add_integer('tilecount', self.tilecount)
 
