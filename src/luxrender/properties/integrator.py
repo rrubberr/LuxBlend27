@@ -188,6 +188,9 @@ class luxrender_integrator(declarative_property_group):
         'pixelsampler',
         'photonsampler',
         'useproba',  # path + bidir
+        'photonpowerclamp',
+        'photonemissionclamp',
+        'lbl_photonclamp',
         'shadowraycount',
     ]
 
@@ -282,6 +285,9 @@ class luxrender_integrator(declarative_property_group):
                     'pixelsampler': {'advanced': True, 'surfaceintegrator': 'sppm'},
                     'photonsampler': {'advanced': True, 'surfaceintegrator': 'sppm'},
                     'useproba': {'advanced': True, 'surfaceintegrator': 'sppm'},
+                    'photonpowerclamp': {'advanced': True, 'surfaceintegrator': 'sppm'},
+                    'photonemissionclamp': {'advanced': True, 'surfaceintegrator': 'sppm'},
+                    'lbl_photonclamp': {'advanced': True, 'surfaceintegrator': 'sppm'},
     }
 
     alert = {}
@@ -963,10 +969,11 @@ class luxrender_integrator(declarative_property_group):
             'description': 'Acceleration structure for hitpoints (not scene geometry)',
             'default': 'parallelhashgrid',
             'items': [
+                ('embree', 'Embree', 'embree'),
                 ('hashgrid', 'Hash Grid', 'hashgrid'),
+                ('hybridhashgrid', 'Hybrid Hash Grid', 'hybridhashgrid'),
                 ('kdtree', 'KD Tree', 'kdtree'),
                 ('parallelhashgrid', 'Parallel Hash Grid', 'parallelhashgrid'),
-                ('hybridhashgrid', 'Hybrid Hash Grid', 'hybridhashgrid'),
             ],
             'save_in_preset': True
         },
@@ -987,6 +994,32 @@ class luxrender_integrator(declarative_property_group):
             'min': 100,
             'max': 100000,
             'save_in_preset': True
+        },
+        {
+            'type': 'float',
+            'attr': 'photonpowerclamp',
+            'name': 'Photon Power Clamping',
+            'description': 'Clamp photon brightness at deposition; strength increases as values approach 0',
+            'default': 0.0,
+            'min': 0.0,
+            'max': 1.0,
+            'save_in_preset': True
+        },
+        {
+            'type': 'float',
+            'attr': 'photonemissionclamp',
+            'name': 'Photon Emission Clamping',
+            'description': 'Clamp photon brightness at emission; strength increases as values approach 0',
+            'default': 0.0,
+            'min': 0.0,
+            'max': 1.0,
+            'save_in_preset': True
+        },
+        {
+            'type': 'text',
+            'attr': 'lbl_photonclamp',
+            'name': 'Photon clamping is biased!',
+            'icon': 'ERROR'
         },
         {
             'type': 'enum',
@@ -1113,6 +1146,8 @@ class luxrender_integrator(declarative_property_group):
                     .add_string('lookupaccel', self.lookupaccel) \
                     .add_float('parallelhashgridspare', self.parallelhashgridspare) \
                     .add_integer('schedulerblocksize', self.schedulerblocksize) \
+                    .add_float('photonpowerclamp', self.photonpowerclamp) \
+                    .add_float('photonemissionclamp', self.photonemissionclamp) \
                     .add_string('pixelsampler', self.pixelsampler) \
                     .add_string('photonsampler', self.photonsampler)
 
